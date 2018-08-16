@@ -1,0 +1,305 @@
+#JQuery
+###选择器
+>在$("①，②")，在①内可以写多种类型的选择器，如标签选择器，ID选择器，类名选择器
+>
+>②表示从哪里开始找 如`body`
+>$(“selector","start”)
+
+    <div>DIV</div>
+    <span class="span">SPAN</span>
+    <p class="p">P</p>
+    <div id="div"></div>
+    $("#div,div,span,p").css({width:100,height:100,background:"red",marginTop:100,display:"block"});
+    console.log($("div,span,p").length);//长度
+###节点操作
+####筛选
+#####children（ ）；
+>所有后代，不包括后代的后代
+>只有标签
+ 
+
+    <div>
+        "wo"
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <script src="js/jQuery%20v1.12.4.js"></script>
+    <script>
+        var len = $("div").children().length;
+        console.log(len);//1
+    </script>
+#####before( )&after( )&append（）&prepend（）`标签插入`
+>before( ) 在目标元素的前面插入
+>after( )在目标元素的后面插入
+>append( )最后面插入
+>prepend( )最前面插入
+
+如：
+
+    <div>
+        <p></p>
+    </div>
+    <script src="js/jQuery%20v1.12.4.js"></script>
+    <script>
+        $("p").before("<i></i>");//前面
+        $("p").after("<b></b>");//后面
+        $("div").append("<i></i>");//尾部插入
+        $("div").prepend("<b></b>");//最前面插入
+    </script>
+#####replaceWidth( )
+>替换，如果是标签，那么就会替换内容和在内部生成一个替换的标签
+>如果是内容就只会覆盖
+
+如
+
+    <div></div>
+    <script src="js/jQuery%20v1.12.4.js"></script>
+    <script>
+        $("div").replaceWith("<div>ccc<div/>");//1
+        $("div").replaceWith("ccc");//2
+    </script>
+结果
+
+	//1
+	<body>
+		"ccc"
+		<p></p>
+	</body>
+	//2
+	<body>
+		"ccc"
+	</body>
+
+可以相反的写法：
+
+| **`$`(target).method(content)**    |     `$`(content).method(target) |   操作   |
+| :--------:  | :--------:| :------: |
+ |  `before()`   |   `insertBefore()` |  在目标元素前面插入内容  |
+| `after()`    |   `insertAfter()` |  在目标元素后面插入内容  |
+| `append()`    |   `appendTo()` |  在目标元素开始处插入内容  |
+| `prepend()`    |   `perpendTo()` |  在目标元素结尾处插入内容  |
+| `replaceWith()`    |   `replaceAll()` |  在目标元素替换为内容  |
+
+>注意：replace替换就只会替换为开发者所写的内容，不会和replaceWith（）一样会在内部在生成一个同样的标签
+
+#####clone（）克隆
+>会克隆所有的元素（如果该元素是父元素）
+>需要插入append（）
+>clone（true）把事件一起克隆了
+
+如：
+
+    <div>
+        <p></p>
+    </div>
+    <script src="js/jQuery%20v1.12.4.js"></script>
+    <script>
+        //$("p").before("<i></i>");
+        //$("p").after("<b></b>");
+        //$("div").append("<i></i>");//尾部插入
+        //$("div").prepend("<b></b>");//最前面
+        //$("div").replaceWith("<div>ccc<div/>");
+        //$("div").replaceWith("<p><p/>");
+        //$("<p>ccc</p>").replaceAll("div");
+        $("p").click(function(){
+            alert(this);
+        })
+        var p = $("p").clone();//只有p有，克隆的没有
+        $("div").append(p);
+        var p = $("p").clone(true);//都有点击事件
+    </script>
+#####remove( )
+>不带参数移出所有元素(父和子元素)
+>remove( selector )  移出某一个
+
+    <div>
+        <p>
+            <i></i>
+        </p>
+    </div>
+    <script src="js/jQuery%20v1.12.4.js"></script>
+    <script>
+        $("i").remove("i");//移出i
+        $("p").remove( );//移出p及下面的元素
+    </script>
+#####empty( ) 清空;
+>清空下面的子元素(不包括自己)
+
+     <div>
+        <p>
+            <i></i>
+        </p>
+    </div>
+    <script src="js/jQuery%20v1.12.4.js"></script>
+    <script>
+        $("div").empty();//没有p及p下的i
+    </script>
+#####detach( ) ;
+>移出标签,返回被移除的标,但是会保留属性
+
+如:
+
+    <div>
+        <p>
+            <i></i>
+        </p>
+    </div>
+    <script src="js/jQuery%20v1.12.4.js"></script>
+    <script>
+       $("p").click(function(){
+	       alert("OK")
+       }
+       var back = $("p").detach( ) ;
+       $("document.body").append(back);//此时的p点击事件被保留下来,不会随着p的删除而被删除
+    </script>
+
+#####`parent()`   `offsetParent()`   `parents()`   `closest()`
+>`parent( )`父级
+>`offsetParent( )` 如果不写position:absolute;那么是HTML,写了就是往上找**`就近原则`**
+>`parents( )`
+>`closest(selector)`  最近的selector父级，可以包含自身(selector)必写,不写找不到
+
+    <div class="box">
+            <ul>
+                <li>
+                    <p>
+                        <i></i>
+                    </p>
+                </li>
+                <li>
+                    <b>
+                        <em></em>
+                    </b>
+                </li>
+            </ul>
+        </div>
+        <script src="js/jQuery%20v1.12.4.js"></script>
+        <script>
+            console.log($("i").parent());//p
+            console.log($("i").offsetParent());//p
+            console.log($("i").parents());//p,li,ul,div.box,body,html
+            console.log($("i").closest());//i
+            console.log($("i").closest("i"));//i
+        </script>
+##### `prevAll() / nextAll()`
+> `prevAll(selector ) `   上面所有兄弟节点  selector可选,selector只要是兄弟元素,写谁就是谁
+>` nextAAll( ) `下面所有兄弟节点 , selector可选,selector只要是兄弟元素,写谁就是谁
+
+    <div class="box">
+        <ul>
+            <li>
+                <p>
+                    <i></i>
+                    <em></em>
+                    <a href="javascript:void(0)">  </a>
+                    <b></b>
+                </p>
+            </li>
+        </ul>
+    </div>
+    <script src="js/jQuery%20v1.12.4.js"></script>
+    <script>
+        console.log($("a").prevAll("i"));//i
+        console.log($("a").prevAll());//em,i
+        console.log($("em").nextAll());//a,b
+        console.log($("i").nextAll("b"));//b
+     </script>
+#####`parentsUntil() `  `prevUntil()`   `nextUntil() ` //截止到….不包含起止
+>1.   parentsUntil( )   截止到某个父级,不包含这个父级
+>2.  prevUntil( )  只会选择到自己向上的兄弟元素
+>3.  nextUntil( )  只会选择到自己向下的兄弟 
+
+如
+
+    <div class="box">
+            <ul>
+                <li>
+                    <p></p>
+                    <i></i>
+                    <b></b>
+                    <em></em>
+                </li>
+            </ul>
+        </div>
+        <script src="js/jQuery%20v1.12.4.js"></script>
+        <script>
+            var val = $("p").parentsUntil("div");
+            console.log(val);//li,ul
+            console.log($("em").prevUntil("body"));//b,i,p
+            console.log($("b").prevUntil("body"));//i,p
+            console.log($("p").nextUntil("li"));//i,b,em
+            console.log($("b").nextUntil("li"));//em
+        </script>
+####包装
+>包装
+                obj.wrap(obj2) obj分别用obj2包装起来                   **外包装**
+                obj.wrapInner(obj2) obj的内容分别用obj2包装起来      **内包装**
+                obj.wrapAll(obj2) 把obj集合抽出来放一个元素的后面整体用obj2包装起来      **整体包装**
+                obj.unwrap() 去除obj最近父级      **移出包装**
+>**`me`**
+>wrap( ),不会再复制,而是直接包起来
+>wrapInner( );如果不是标签,则只会插入内容;
+>wrapAll( );等于是复制obj2
+
+如
+	
+
+	    <div></div>
+        <i></i>
+        <script src="js/jQuery%20v1.12.4.js"></script>
+        <script>
+	        $("i").wrap("<p></p>");//p>i
+            $("div").wrapInner("<p></p>");//div>p
+            $("div").wrapInner("p");//div.innerHTML = "p"
+            $("i").wrapAll("div");//等于把div复制,让后把i写在div内;div>i
+            $("p").unwrap();//去除最近的父级
+        </script>
+#####筛选同级同类元素`slice()`
+>slice(start,end) 筛选集合中下标为start至end的元素，但是不包含end
+
+如:
+
+    <div>
+            <ul>
+                <li>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </li>
+            </ul>
+        </div>
+        <script src="js/jQuery%20v1.12.4.js"></script>
+        <script>
+            console.log($("i").slice(0,4));//i,i,i,i
+        </script>
+#####转化为真实数组`toArray()`;
+
+    <div class="box">
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+        </div>
+        <script src="js/jQuery%20v1.12.4.js"></script>
+        <script>
+            var arr = $("p").toArray();
+            console.log(arr);//Array(10) length:10
+        </script>
