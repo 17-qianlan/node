@@ -25,6 +25,10 @@
 - Object.observe
 - MutationObserver
 
+> **任务队列中，在每一次事件循环中，macrotask只会提取一个执行，而microtask会一直提取，直到microsoft队列为空为止**
+
+
+
 ### 一个相对简单的例子
 
 ```js
@@ -74,4 +78,6 @@ console.log("8");
 
 - 不同的浏览器对 **promise** 的表现不一样   
 
-**[链 接](https://www.cnblogs.com/QH-Jimmy/p/6493389.html)**
+**[链 接 1](https://www.cnblogs.com/QH-Jimmy/p/6493389.html)**
+
+[链 接 2](https://www.cnblogs.com/tugenhua0707/p/7675185.html)
